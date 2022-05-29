@@ -11,27 +11,59 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="index.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script  src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> 
     </head>
     <body>
         <div id="weather-container"></div>
 
-        <p id="user-location"></p>
-        <p id="user-weather"></p>
+       <!-- add class of blob to see blob again -->
         <div id="main-container">
-            <h1>Preparat per riure? 🤣</h1>
+            <h1 id="main-heading">Preparat per riure? 🤣</h1>
             <div id="joke-container"></div>
-            <scores-container>
+            <div id="scores-container">
                 <button type="button" onclick="giveScore(1)" class="btn score-btn">😓</button>
                 <button type="button" onclick="giveScore(2)" class="btn score-btn">😐</button>
                 <button type="button" onclick="giveScore(3)" class="btn score-btn">😂</button>
-            </scores-container>
-
-            <button type="button" onclick="getJoke()" class="btn btn-outline-dark">Següent acudit</button>
+            </div>
+                
+            <button id="btn-jokes" type="button" onclick="getJoke(); generateBlob()" class="btn btn-outline-dark">Següent acudit</button>
         </div>
+        <div id="small-blob" class="blob"></div>
+       <script>
+           
+           $(document).ready(function(){
+  generateBlob();
+});
+
+function generateBlob() {
+  const percentage1 = randomNum(25, 75);
+  const percentage2 = randomNum(25, 75);
+  const percentage3 = randomNum(25, 75);
+  const percentage4 = randomNum(25, 75);
+  var percentage11 = 100 - percentage1;
+  var percentage21 = 100 - percentage2;
+  var percentage31 = 100 - percentage3;
+  var percentage41 = 100 - percentage4;
+  var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
+
+  var colorR = Math.floor((Math.random() * 256));
+      var colorG = Math.floor((Math.random() * 256));
+      var colorB = Math.floor((Math.random() * 256));
+
+  $(".blob").css("border-radius", borderRadius);
+  $(".blob").css("background-color", "rgb(" + colorR + "," + colorG + "," + colorB + ")");
+  // $(".style span").html(borderRadius);
+}
+
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
+}
+       </script>
        
         <script>var exports = {};</script>
         <script src="index.js" async defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     </body>
 </html>
 

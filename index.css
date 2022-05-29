@@ -1,8 +1,16 @@
+body {
+    transition: background  1.5s;
+ }
+
 #main-container {
-    height:450px;
-    width: 80%;
-    background-image: url( './assets/blob.svg' );
-    background-size: 120%;
+    padding: 2rem;
+    max-height:500px;
+    max-width: 500px;
+    z-index:1;
+    border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+    background-color: red;
+    /* background-image: url( './assets/blob.svg' ); */
+    background-size: 80%;
     background-repeat: no-repeat;
     margin:auto;
     display:flex;
@@ -10,8 +18,46 @@
     align-items: center;
     justify-content: center;
     background-position:center;
+    transition: background  1.2s;
+    transition: color  1.5s;
  }
 
- svg path{
-    fill:green;
+ #joke-container {
+     max-width: 60%;
+     height:100px;
+ }
+
+ #small-blob {
+     height: 200px;
+     width: 200px;
+ }
+
+ .score-btn {
+    background: none;
+	color: inherit;
+	border: none;
+    size: 1.5rem;
+	padding: 1.5rem;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+ }
+
+ #btn-jokes {
+     background: rgb(81, 32, 179);
+     color: white;
+     padding: 1rem;
+     border: none;
+     cursor: pointer;
+     border-radius: .4rem;
+ }
+
+ #weather-container {
+     font-weight: bold;
+ }
+
+  .blob {
+      height: 500px;
+      width: 500px;
   }
+

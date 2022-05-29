@@ -1,5 +1,7 @@
 import { RequestOption, jokeData, reportAcudit } from "./interfaces";
 import { Score } from "./types";
+//import { generateBlob } from "./blob";
+//import $ from "jquery";
 
 let currentJoke: string = "";
 let lat: string = "";
@@ -9,6 +11,8 @@ let reportAcudits: reportAcudit[] = [];
 let geekJokes: boolean = false;
 
 export async function getJoke(): Promise<void> {
+  //generateBlob();
+  getColors();
   var myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
 
@@ -73,15 +77,67 @@ const isSameJoke = (reports: reportAcudit[]) => {
 
 //DISPLAY OF WEATHER IS PROBABLY NOT NECESSARY
 
-var locationDisplay = document.getElementById("user-location");
 var weatherDisplay = document.getElementById("weather-container");
 
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
-    locationDisplay.innerHTML = "Geolocation is not supported by this browser.";
+    weatherDisplay.innerHTML = "Geolocation is not supported by this browser.";
   }
+}
+
+async function getColors(): Promise<void> {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "text/plain");
+
+  var raw = '{"model":"default"}';
+
+  var requestOptions: RequestOption = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  fetch("http://colormind.io/api/", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      let colorsArray: [][] = JSON.parse(result).result;
+      console.log(colorsArray[0].toString());
+      const h1Color = document.getElementsByTagName("h1")[0];
+
+      document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
+
+      //3 should be for other blob
+      document.getElementById(
+        "main-container"
+      ).style.backgroundColor = `rgb(${colorsArray[0].toString()})`;
+
+      document.getElementById(
+        "joke-container"
+      ).style.color = `rgb(${colorsArray[2].toString()})`;
+
+      document.getElementById(
+        "btn-jokes"
+      ).style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
+
+      document.getElementById(
+        "btn-jokes"
+      ).style.color = `rgb(${colorsArray[0].toString()})`;
+
+      document.getElementById(
+        "weather-container"
+      ).style.color = `rgb(${colorsArray[4].toString()})`;
+
+      h1Color.style.color = `rgb(${colorsArray[4].toString()})`;
+
+      let ArrayOfString = colorsArray.forEach((item) => {
+        return item;
+      });
+      console.log("Colors", colorsArray);
+    })
+    .catch((error) => console.log("error", error));
 }
 
 async function getWeather(): Promise<void> {
@@ -100,7 +156,7 @@ async function getWeather(): Promise<void> {
       let currentTemp_C = parsedResult.current.temp_c;
       let weatherImg: string = parsedResult.current.condition.icon;
 
-      weatherDisplay.innerHTML = `Today it is ${currentWeather} and ${currentTemp_C}° C`;
+      weatherDisplay.innerHTML = `${currentWeather} | ${currentTemp_C}° C`;
 
       var img = document.createElement("img");
       img.src = `http:${weatherImg}`;
@@ -114,11 +170,11 @@ function showPosition(position: GeolocationPosition) {
   lat = position.coords.latitude.toString();
   long = position.coords.longitude.toString();
   getWeather();
-  locationDisplay.innerHTML =
-    "Latitude: " +
-    position.coords.latitude +
-    "<br>Longitude: " +
-    position.coords.longitude;
+  // locationDisplay.innerHTML =
+  //   "Latitude: " +
+  //   position.coords.latitude +
+  //   "<br>Longitude: " +
+  //   position.coords.longitude;
 }
 
 getLocation();
