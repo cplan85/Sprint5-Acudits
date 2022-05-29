@@ -15,28 +15,41 @@ let lat = "";
 let long = "";
 let currentWeather = "";
 let reportAcudits = [];
+let geekJokes = false;
 function getJoke() {
     return __awaiter(this, void 0, void 0, function* () {
-        const jokeDisplay = document.querySelector("#joke-container");
         var myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
-        var requestOptions = {
+        const requestOption1 = {
             method: "GET",
             headers: myHeaders,
             redirect: "follow",
         };
+        const requestOption2 = {
+            method: "GET",
+            redirect: "follow",
+        };
         const apiUrl = "https://icanhazdadjoke.com/";
-        yield fetch(apiUrl, requestOptions)
-            .then((response) => response.text())
-            .then((result) => {
-            const parsedResult = JSON.parse(result);
-            jokeDisplay.textContent = parsedResult.joke;
-            currentJoke = parsedResult.joke;
-        })
-            .catch((error) => console.log("error", error));
+        const apiUrl2 = "https://geek-jokes.sameerkumar.website/api?format=json";
+        geekJokes
+            ? fetchJokes(apiUrl2, requestOption2)
+            : fetchJokes(apiUrl, requestOption1);
     });
 }
 exports.getJoke = getJoke;
+const fetchJokes = (apiUrl, requestOptions) => {
+    const jokeDisplay = document.querySelector("#joke-container");
+    fetch(apiUrl, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+        const parsedResult = JSON.parse(result);
+        console.log(parsedResult);
+        jokeDisplay.textContent = parsedResult.joke;
+        currentJoke = parsedResult.joke;
+        geekJokes = !geekJokes;
+    })
+        .catch((error) => console.log("error", error));
+};
 const giveScore = (score) => {
     const currentTime = new Date();
     let jokeDate = currentTime.toISOString();
@@ -64,7 +77,7 @@ const isSameJoke = (reports) => {
 };
 //DISPLAY OF WEATHER IS PROBABLY NOT NECESSARY
 var locationDisplay = document.getElementById("user-location");
-var weatherDisplay = document.getElementById("user-weather");
+var weatherDisplay = document.getElementById("weather-container");
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -85,8 +98,9 @@ function getWeather() {
             const parsedResult = JSON.parse(result);
             console.log("WEATHER", parsedResult);
             currentWeather = parsedResult.current.condition.text;
+            let currentTemp_C = parsedResult.current.temp_c;
             let weatherImg = parsedResult.current.condition.icon;
-            weatherDisplay.innerHTML = currentWeather;
+            weatherDisplay.innerHTML = `Today it is ${currentWeather} and ${currentTemp_C}° C`;
             var img = document.createElement("img");
             img.src = `http:${weatherImg}`;
             console.log(weatherImg);
@@ -96,8 +110,8 @@ function getWeather() {
     });
 }
 function showPosition(position) {
-    lat = position.coords.latitude;
-    long = position.coords.longitude;
+    lat = position.coords.latitude.toString();
+    long = position.coords.longitude.toString();
     getWeather();
     locationDisplay.innerHTML =
         "Latitude: " +

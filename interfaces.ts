@@ -1,7 +1,7 @@
 import { Score } from "./types";
 export interface RequestOption {
   method: string;
-  headers: Headers;
+  headers?: Headers;
   redirect: RequestRedirect;
 }
 

@@ -6,30 +6,45 @@ let lat: string = "";
 let long: string = "";
 let currentWeather: string = "";
 let reportAcudits: reportAcudit[] = [];
-export async function getJoke(): Promise<void> {
-  const jokeDisplay = document.querySelector("#joke-container");
+let geekJokes: boolean = false;
 
+export async function getJoke(): Promise<void> {
   var myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
 
-  var requestOptions: RequestOption = {
+  const requestOption1: RequestOption = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
   };
 
-  const apiUrl: string = "https://icanhazdadjoke.com/";
+  const requestOption2: RequestOption = {
+    method: "GET",
+    redirect: "follow",
+  };
 
-  await fetch(apiUrl, requestOptions)
+  const apiUrl: string = "https://icanhazdadjoke.com/";
+  const apiUrl2: string =
+    "https://geek-jokes.sameerkumar.website/api?format=json";
+
+  geekJokes
+    ? fetchJokes(apiUrl2, requestOption2)
+    : fetchJokes(apiUrl, requestOption1);
+}
+
+const fetchJokes = (apiUrl: string, requestOptions: RequestOption): void => {
+  const jokeDisplay = document.querySelector("#joke-container");
+  fetch(apiUrl, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const parsedResult: jokeData = JSON.parse(result);
+      console.log(parsedResult);
       jokeDisplay.textContent = parsedResult.joke;
       currentJoke = parsedResult.joke;
+      geekJokes = !geekJokes;
     })
     .catch((error) => console.log("error", error));
-}
-
+};
 export const giveScore = (score: Score) => {
   const currentTime = new Date();
   let jokeDate = currentTime.toISOString();
@@ -59,7 +74,7 @@ const isSameJoke = (reports: reportAcudit[]) => {
 //DISPLAY OF WEATHER IS PROBABLY NOT NECESSARY
 
 var locationDisplay = document.getElementById("user-location");
-var weatherDisplay = document.getElementById("user-weather");
+var weatherDisplay = document.getElementById("weather-container");
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -82,9 +97,10 @@ async function getWeather(): Promise<void> {
       const parsedResult = JSON.parse(result);
       console.log("WEATHER", parsedResult);
       currentWeather = parsedResult.current.condition.text;
+      let currentTemp_C = parsedResult.current.temp_c;
       let weatherImg: string = parsedResult.current.condition.icon;
 
-      weatherDisplay.innerHTML = currentWeather;
+      weatherDisplay.innerHTML = `Today it is ${currentWeather} and ${currentTemp_C}° C`;
 
       var img = document.createElement("img");
       img.src = `http:${weatherImg}`;
@@ -94,9 +110,9 @@ async function getWeather(): Promise<void> {
     .catch((error) => console.log("error", error));
 }
 
-function showPosition(position) {
-  lat = position.coords.latitude;
-  long = position.coords.longitude;
+function showPosition(position: GeolocationPosition) {
+  lat = position.coords.latitude.toString();
+  long = position.coords.longitude.toString();
   getWeather();
   locationDisplay.innerHTML =
     "Latitude: " +
