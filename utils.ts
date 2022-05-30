@@ -7,10 +7,4 @@ export const isSameJoke = (reports: reportAcudit[], currentJoke: string) => {
       : false;
   };
 
- export function getLocation(weatherDisplay: HTMLElement) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-      weatherDisplay.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  }
+  
