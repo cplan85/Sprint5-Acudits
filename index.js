@@ -9,19 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.giveScore = exports.getJoke = void 0;
+exports.giveScore = exports.getJoke = exports.generateBlob2 = void 0;
+//import { getLocation } from "./utils";
 //import { generateBlob } from "./blob";
-//import $ from "jquery";
 let currentJoke = "";
 let lat = "";
 let long = "";
 let currentWeather = "";
 let reportAcudits = [];
 let geekJokes = false;
+function generateBlob2() {
+    const percentage1 = randomNum(25, 75);
+    const percentage2 = randomNum(25, 75);
+    const percentage3 = randomNum(25, 75);
+    const percentage4 = randomNum(25, 75);
+    var percentage11 = 100 - percentage1;
+    var percentage21 = 100 - percentage2;
+    var percentage31 = 100 - percentage3;
+    var percentage41 = 100 - percentage4;
+    var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
+    document.getElementById("main-container").style.borderRadius = borderRadius;
+}
+exports.generateBlob2 = generateBlob2;
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
+}
 function getJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         //generateBlob();
         getColors();
+        generateBlob2();
         var myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
         const requestOption1 = {
@@ -54,13 +71,18 @@ const fetchJokes = (apiUrl, requestOptions) => {
     })
         .catch((error) => console.log("error", error));
 };
+const isSameJoke = (reports, currentJoke) => {
+    return reports.filter((report) => report.joke === currentJoke).length > 0
+        ? true
+        : false;
+};
 const giveScore = (score) => {
     const currentTime = new Date();
     let jokeDate = currentTime.toISOString();
     //can only give a score if you have at least one joke up on the screen.
     if (currentJoke !== "") {
         //if the joke is the same, only modify the score within the array
-        if (reportAcudits.length > 0 && isSameJoke(reportAcudits)) {
+        if (reportAcudits.length > 0 && isSameJoke(reportAcudits, currentJoke)) {
             //use find function in case joke repeats again.
             reportAcudits[reportAcudits.length - 1].score = score;
         }
@@ -74,14 +96,8 @@ const giveScore = (score) => {
     console.log(reportAcudits);
 };
 exports.giveScore = giveScore;
-const isSameJoke = (reports) => {
-    return reports.filter((report) => report.joke === currentJoke).length > 0
-        ? true
-        : false;
-};
-//DISPLAY OF WEATHER IS PROBABLY NOT NECESSARY
 var weatherDisplay = document.getElementById("weather-container");
-function getLocation() {
+function getLocation(weatherDisplay) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
     }
@@ -89,6 +105,9 @@ function getLocation() {
         weatherDisplay.innerHTML = "Geolocation is not supported by this browser.";
     }
 }
+const changeElementColor = (elementID, colorType, colorsArray, colorArrayIdx) => {
+    document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[colorArrayIdx].toString()})`;
+};
 function getColors() {
     return __awaiter(this, void 0, void 0, function* () {
         var myHeaders = new Headers();
@@ -106,17 +125,22 @@ function getColors() {
             let colorsArray = JSON.parse(result).result;
             console.log(colorsArray[0].toString());
             const h1Color = document.getElementsByTagName("h1")[0];
+            const svgColor1 = document.getElementsByTagName("path")[0];
+            const svgColor2 = document.getElementsByTagName("path")[1];
+            const svgColor3 = document.getElementsByTagName("path")[2];
+            //const svgHoverColor1 = document.getElementById("icon-1:hover");
+            //svgHoverColor1.style.fill = `rgb(${colorsArray[1].toString()})`;
+            svgColor1.style.fill = `rgb(${colorsArray[4].toString()})`;
+            svgColor2.style.fill = `rgb(${colorsArray[4].toString()})`;
+            svgColor3.style.fill = `rgb(${colorsArray[4].toString()})`;
             document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
             //3 should be for other blob
-            document.getElementById("main-container").style.backgroundColor = `rgb(${colorsArray[0].toString()})`;
-            document.getElementById("joke-container").style.color = `rgb(${colorsArray[2].toString()})`;
-            document.getElementById("btn-jokes").style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
-            document.getElementById("btn-jokes").style.color = `rgb(${colorsArray[0].toString()})`;
-            document.getElementById("weather-container").style.color = `rgb(${colorsArray[4].toString()})`;
+            changeElementColor("main-container", "backgroundColor", colorsArray, 0);
+            changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
+            changeElementColor("btn-jokes", "color", colorsArray, 0);
+            changeElementColor("joke-container", "color", colorsArray, 2);
+            changeElementColor("weather-container", "color", colorsArray, 4);
             h1Color.style.color = `rgb(${colorsArray[4].toString()})`;
-            let ArrayOfString = colorsArray.forEach((item) => {
-                return item;
-            });
             console.log("Colors", colorsArray);
         })
             .catch((error) => console.log("error", error));
@@ -155,4 +179,4 @@ function showPosition(position) {
     //   "<br>Longitude: " +
     //   position.coords.longitude;
 }
-getLocation();
+getLocation(weatherDisplay);

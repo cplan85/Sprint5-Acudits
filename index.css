@@ -1,6 +1,20 @@
 body {
     transition: background  1.5s;
+    font-family: 'HeydingsCommonIconsRegular', Helvetida Neue, sans-serif;
  }
+
+ 
+@font-face {
+    font-family:'HeydingsCommonIconsRegular';
+    src: url('http://ianfarb.com/random/heydings_icons-webfont.eot');
+    src: url('http://ianfarb.com/random/heydings_icons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('http://ianfarb.com/random/heydings_icons-webfont.woff') format('woff'),
+         url('http://ianfarb.com/random/heydings_icons-webfont.ttf') format('truetype'),
+         url('http://ianfarb.com/random/heydings_icons-webfont.svg#HeydingsCommonIconsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 #main-container {
     padding: 2rem;
@@ -19,12 +33,15 @@ body {
     justify-content: center;
     background-position:center;
     transition: background  1.2s;
+    transition: border-radius  1.5s;
     transition: color  1.5s;
  }
 
  #joke-container {
      max-width: 60%;
      height:100px;
+     text-decoration:none;
+    
  }
 
  #small-blob {
@@ -41,7 +58,25 @@ body {
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
+    width: 25px;
  }
+
+ img {
+     height: 25px;
+ }
+ 
+ svg {
+     height: 50px;
+ }
+
+ path {
+     fill: rgb(255, 255, 255);
+ }
+
+ path:hover {
+     fill: black;
+ }
+ 
 
  #btn-jokes {
      background: rgb(81, 32, 179);

@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="index.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script  src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script> 
+        <script src="https://kit.fontawesome.com/101000f347.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <div id="weather-container"></div>
@@ -22,9 +22,13 @@
             <h1 id="main-heading">Preparat per riure? 🤣</h1>
             <div id="joke-container"></div>
             <div id="scores-container">
-                <button type="button" onclick="giveScore(1)" class="btn score-btn">😓</button>
-                <button type="button" onclick="giveScore(2)" class="btn score-btn">😐</button>
-                <button type="button" onclick="giveScore(3)" class="btn score-btn">😂</button>
+                <button type="button" onclick="giveScore(1)" class="btn score-btn">
+                    <i id="icon-1" class="fas fa-frown-open fa-2x"></i>
+                   
+                </button>
+                <button type="button" onclick="giveScore(2)" class="btn score-btn"> <i class="fas fa-flushed fa-2x"></i>
+                </button>
+                <button type="button" onclick="giveScore(3)" class="btn score-btn"><i class="fas fa-grin-squint-tears fa-2x"></i></button>
             </div>
                 
             <button id="btn-jokes" type="button" onclick="getJoke(); generateBlob()" class="btn btn-outline-dark">Següent acudit</button>
