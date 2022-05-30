@@ -10,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.giveScore = exports.getJoke = exports.generateBlob2 = void 0;
-//import { getLocation } from "./utils";
-//import { generateBlob } from "./blob";
 let currentJoke = "";
 let lat = "";
 let long = "";
@@ -125,15 +123,22 @@ function getColors() {
             let colorsArray = JSON.parse(result).result;
             console.log(colorsArray[0].toString());
             const h1Color = document.getElementsByTagName("h1")[0];
-            const svgColor1 = document.getElementsByTagName("path")[0];
-            const svgColor2 = document.getElementsByTagName("path")[1];
-            const svgColor3 = document.getElementsByTagName("path")[2];
-            //const svgHoverColor1 = document.getElementById("icon-1:hover");
-            //svgHoverColor1.style.fill = `rgb(${colorsArray[1].toString()})`;
-            svgColor1.style.fill = `rgb(${colorsArray[4].toString()})`;
-            svgColor2.style.fill = `rgb(${colorsArray[4].toString()})`;
-            svgColor3.style.fill = `rgb(${colorsArray[4].toString()})`;
+            const svgColors = document.getElementsByTagName("path");
+            [...svgColors].forEach((item) => {
+                item.style.fill = `rgb(${colorsArray[4].toString()})`;
+            });
             document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
+            var $Osc = {
+                hover: function (event) {
+                    event.target.style.backgroundColor = `rgb(${colorsArray[4].toString()})`;
+                },
+                out: function (event) {
+                    event.target.style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
+                },
+            };
+            var $OscElement = document.getElementById("btn-jokes");
+            $OscElement.addEventListener("mouseover", $Osc.hover, false);
+            $OscElement.addEventListener("mouseout", $Osc.out, false);
             //3 should be for other blob
             changeElementColor("main-container", "backgroundColor", colorsArray, 0);
             changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
@@ -173,10 +178,5 @@ function showPosition(position) {
     lat = position.coords.latitude.toString();
     long = position.coords.longitude.toString();
     getWeather();
-    // locationDisplay.innerHTML =
-    //   "Latitude: " +
-    //   position.coords.latitude +
-    //   "<br>Longitude: " +
-    //   position.coords.longitude;
 }
 getLocation(weatherDisplay);

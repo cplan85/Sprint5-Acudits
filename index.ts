@@ -1,7 +1,5 @@
 import { RequestOption, jokeData, reportAcudit } from "./interfaces";
-import { Score } from "./types";
-//import { getLocation } from "./utils";
-//import { generateBlob } from "./blob";
+import { Score, ColorType } from "./types";
 
 let currentJoke: string = "";
 let lat: string = "";
@@ -9,7 +7,6 @@ let long: string = "";
 let currentWeather: string = "";
 let reportAcudits: reportAcudit[] = [];
 let geekJokes: boolean = false;
-
 
 export function generateBlob2() {
   const percentage1 = randomNum(25, 75);
@@ -23,7 +20,6 @@ export function generateBlob2() {
   var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
 
   document.getElementById("main-container").style.borderRadius = borderRadius;
-
 }
 
 function randomNum(min: number, max: number) {
@@ -97,8 +93,6 @@ export const giveScore = (score: Score) => {
   console.log(reportAcudits);
 };
 
-
-
 var weatherDisplay = document.getElementById("weather-container");
 
 function getLocation(weatherDisplay: HTMLElement) {
@@ -109,11 +103,16 @@ function getLocation(weatherDisplay: HTMLElement) {
   }
 }
 
-const changeElementColor = (elementID: string, colorType: string, colorsArray: [][] ,colorArrayIdx: number) : void => {
-  document.getElementById(
-    elementID
-  ).style[colorType] = `rgb(${colorsArray[colorArrayIdx].toString()})`;
-}
+const changeElementColor = (
+  elementID: string,
+  colorType: ColorType,
+  colorsArray: [][],
+  colorArrayIdx: number
+): void => {
+  document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[
+    colorArrayIdx
+  ].toString()})`;
+};
 
 async function getColors(): Promise<void> {
   var myHeaders = new Headers();
@@ -135,19 +134,25 @@ async function getColors(): Promise<void> {
       console.log(colorsArray[0].toString());
       const h1Color = document.getElementsByTagName("h1")[0];
 
-      const svgColor1 = document.getElementsByTagName("path")[0];
-      const svgColor2 = document.getElementsByTagName("path")[1];
-      const svgColor3 = document.getElementsByTagName("path")[2];
+      const svgColors = document.getElementsByTagName("path");
 
-      //const svgHoverColor1 = document.getElementById("icon-1:hover");
-      //svgHoverColor1.style.fill = `rgb(${colorsArray[1].toString()})`;
-      
-
-      svgColor1.style.fill = `rgb(${colorsArray[4].toString()})`;
-      svgColor2.style.fill = `rgb(${colorsArray[4].toString()})`;
-      svgColor3.style.fill = `rgb(${colorsArray[4].toString()})`;
+      [...svgColors].forEach((item) => {
+        item.style.fill = `rgb(${colorsArray[4].toString()})`;
+      });
 
       document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
+
+      var $Osc = {
+        hover: function (event: Event) {
+          event.target.style.backgroundColor = `rgb(${colorsArray[4].toString()})`;
+        },
+        out: function (event: Event) {
+          event.target.style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
+        },
+      };
+      var $OscElement = document.getElementById("btn-jokes");
+      $OscElement.addEventListener("mouseover", $Osc.hover, false);
+      $OscElement.addEventListener("mouseout", $Osc.out, false);
 
       //3 should be for other blob
       changeElementColor("main-container", "backgroundColor", colorsArray, 0);
@@ -160,10 +165,8 @@ async function getColors(): Promise<void> {
 
       changeElementColor("weather-container", "color", colorsArray, 4);
 
-
       h1Color.style.color = `rgb(${colorsArray[4].toString()})`;
 
-  
       console.log("Colors", colorsArray);
     })
     .catch((error) => console.log("error", error));
@@ -199,11 +202,6 @@ function showPosition(position: GeolocationPosition) {
   lat = position.coords.latitude.toString();
   long = position.coords.longitude.toString();
   getWeather();
-  // locationDisplay.innerHTML =
-  //   "Latitude: " +
-  //   position.coords.latitude +
-  //   "<br>Longitude: " +
-  //   position.coords.longitude;
 }
 
 getLocation(weatherDisplay);
