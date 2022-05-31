@@ -8,7 +8,6 @@ let currentWeather: string = "";
 let reportAcudits: reportAcudit[] = [];
 let geekJokes: boolean = false;
 
-
 // Exercici 1 & Exercici 5
 export async function getJoke(): Promise<void> {
   //generateBlob();
@@ -78,7 +77,6 @@ export const giveScore = (score: Score) => {
   }
 
   console.log(reportAcudits);
-  
 };
 
 var weatherDisplay = document.getElementById("weather-container");
@@ -94,7 +92,7 @@ function getLocation(weatherDisplay: HTMLElement) {
 // Exercici 4
 async function getWeather(): Promise<void> {
   const key: string = "c6e04a286ab44cf5842181305222805";
-  const apiUrl: string = "http://api.weatherapi.com/v1/current.json?key=";
+  const apiUrl: string = "https://api.weatherapi.com/v1/current.json?key=";
   const locationParam: string = `&q=${lat}, ${long}&aqi=no`;
 
   const fullAPI = `${apiUrl}${key}${locationParam}`;
@@ -145,7 +143,7 @@ function randomNum(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
 }
 
-// BONUS Esta función obtiene un esquema de color con 5 colores diferentes, y lo aplico a los elementos html en cada clic de botón. 
+// BONUS Esta función obtiene un esquema de color con 5 colores diferentes, y lo aplico a los elementos html en cada clic de botón.
 const changeElementColor = (
   elementID: string,
   colorType: ColorType,
@@ -177,35 +175,55 @@ async function getColors(): Promise<void> {
       let colorsArray: [][] = JSON.parse(result).result;
 
       const getRGB = (index: number) => {
-          return `rgb(${colorsArray[index].toString()})`
-      }
+        return `rgb(${colorsArray[index].toString()})`;
+      };
 
       document.body.style.backgroundColor = getRGB(1);
 
-      var elementHover = (styleProperty: string, hoverColor: number, outColor: number) =>{ 
+      var elementHover = (
+        styleProperty: string,
+        hoverColor: number,
+        outColor: number
+      ) => {
         return {
-        hover: function (event: any) {
-          event.target.style[styleProperty] = getRGB(hoverColor);
-        },
-        out: function (event: any) {
-          event.target.style[styleProperty] = getRGB(outColor);
-        },
+          hover: function (event: any) {
+            event.target.style[styleProperty] = getRGB(hoverColor);
+          },
+          out: function (event: any) {
+            event.target.style[styleProperty] = getRGB(outColor);
+          },
+        };
       };
-         }
       var buttonJoke = document.getElementById("btn-jokes");
-      buttonJoke.addEventListener("mouseover", elementHover("backgroundColor", 4, 3).hover, false);
-      buttonJoke.addEventListener("mouseout", elementHover("backgroundColor", 4, 3).out, false);
+      buttonJoke.addEventListener(
+        "mouseover",
+        elementHover("backgroundColor", 4, 3).hover,
+        false
+      );
+      buttonJoke.addEventListener(
+        "mouseout",
+        elementHover("backgroundColor", 4, 3).out,
+        false
+      );
 
       const svgColors = document.getElementsByTagName("path");
 
       [...svgColors].forEach((item) => {
         item.style.fill = getRGB(1);
-        item.addEventListener("mouseover", elementHover("fill", 4, 1).hover, false);
-        item.addEventListener("mouseout",  elementHover("fill",4 ,1).out, false);
+        item.addEventListener(
+          "mouseover",
+          elementHover("fill", 4, 1).hover,
+          false
+        );
+        item.addEventListener(
+          "mouseout",
+          elementHover("fill", 4, 1).out,
+          false
+        );
       });
 
-        const h1Color = document.getElementsByTagName("h1")[0];
-        h1Color.style.color = getRGB(4);
+      const h1Color = document.getElementsByTagName("h1")[0];
+      h1Color.style.color = getRGB(4);
 
       changeElementColor("main-container", "backgroundColor", colorsArray, 0);
 
@@ -223,5 +241,3 @@ async function getColors(): Promise<void> {
     })
     .catch((error) => console.log("error", error));
 }
-
-
