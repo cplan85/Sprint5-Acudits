@@ -14,7 +14,7 @@
 *** See the bottom of this document for the declaration of the reference variables
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
+
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -22,6 +22,8 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+
+-->
 
 <!-- PROJECT LOGO -->
 <br />
@@ -38,11 +40,11 @@
     <a href="https://github.com/cplan85/Sprint5-Acudits"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://cp-joke-generator-blob.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/cplan85/Sprint5-Acudits/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/cplan85/Sprint5-Acudits/issues">Request Feature</a>
   </p>
 </div>
 
@@ -84,13 +86,9 @@ This is Sprint 5 of the Barcelona Activa Cibernarium course on Front-end with An
 
 ### Built With
 
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Node](https://nodejs.org/en/)
-- [CSS](https://www.w3schools.com/css/default.asp)
 - [Typescript](https://www.typescriptlang.org/)
+- [CSS](https://www.w3schools.com/css/default.asp)
+- [Node](https://nodejs.org/en/)
 - [JQuery](https://jquery.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -99,8 +97,7 @@ This is Sprint 5 of the Barcelona Activa Cibernarium course on Front-end with An
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Clone repository then do npm install.
 
 ### Prerequisites
 
@@ -113,10 +110,10 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get a free API Key at [https://www.weatherapi.com/](https://www.weatherapi.com/).
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/cplan85/Sprint5-Acudits.git
    ```
 3. Install NPM packages
    ```sh
@@ -133,9 +130,7 @@ This is an example of how to list things you need to use the software and how to
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+For a little de-stressor, check the latest Dad, Geek, or Chuck Norris jokes, and rate them!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -143,10 +138,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
+- [x] API calls to Joke APIS
+- [x] Get local Weather Data
+- [x] update Color Scheme based on API
+- [ ] save user's favorited jokes
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
@@ -191,9 +186,12 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 ## Acknowledgments
 
-- []()
-- []()
-- []()
+- [https://icanhazdadjoke.com/](https://icanhazdadjoke.com/)
+- [https://github.com/sameerkumar18/geek-joke-api](https://github.com/sameerkumar18/geek-joke-api)
+- [https://www.weatherapi.com/](https://www.weatherapi.com/)
+- [http://colormind.io/api-access/](http://colormind.io/api-access/)
+- [https://fontawesome.com/](https://fontawesome.com/)
+- [https://github.com/public-apis/public-apis](https://github.com/public-apis/public-apis)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
