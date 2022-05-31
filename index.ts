@@ -204,9 +204,6 @@ async function getColors(): Promise<void> {
         item.addEventListener("mouseout",  elementHover("fill",4 ,1).out, false);
       });
 
-      //3 should be for other blob
-
-        //console.log(colorsArray[0].toString());
         const h1Color = document.getElementsByTagName("h1")[0];
         h1Color.style.color = getRGB(4);
 

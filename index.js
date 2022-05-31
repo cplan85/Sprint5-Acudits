@@ -181,8 +181,6 @@ function getColors() {
                 item.addEventListener("mouseover", elementHover("fill", 4, 1).hover, false);
                 item.addEventListener("mouseout", elementHover("fill", 4, 1).out, false);
             });
-            //3 should be for other blob
-            //console.log(colorsArray[0].toString());
             const h1Color = document.getElementsByTagName("h1")[0];
             h1Color.style.color = getRGB(4);
             changeElementColor("main-container", "backgroundColor", colorsArray, 0);
