@@ -9,34 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.giveScore = exports.getJoke = exports.generateBlob2 = void 0;
+exports.generateBlob2 = exports.giveScore = exports.getJoke = void 0;
 let currentJoke = "";
 let lat = "";
 let long = "";
 let currentWeather = "";
 let reportAcudits = [];
 let geekJokes = false;
-function generateBlob2() {
-    const percentage1 = randomNum(25, 75);
-    const percentage2 = randomNum(25, 75);
-    const percentage3 = randomNum(25, 75);
-    const percentage4 = randomNum(25, 75);
-    var percentage11 = 100 - percentage1;
-    var percentage21 = 100 - percentage2;
-    var percentage31 = 100 - percentage3;
-    var percentage41 = 100 - percentage4;
-    var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
-    document.getElementById("main-container").style.borderRadius = borderRadius;
-}
-exports.generateBlob2 = generateBlob2;
-function randomNum(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
-}
+// Exercici 1 & Exercici 5
 function getJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         //generateBlob();
         getColors();
-        generateBlob2();
+        generateBlob2("main-container");
+        generateBlob2("right-blob");
         var myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
         const requestOption1 = {
@@ -74,6 +60,7 @@ const isSameJoke = (reports, currentJoke) => {
         ? true
         : false;
 };
+//Exercici 3
 const giveScore = (score) => {
     const currentTime = new Date();
     let jokeDate = currentTime.toISOString();
@@ -86,6 +73,7 @@ const giveScore = (score) => {
         }
         else {
             reportAcudits.push({ joke: currentJoke, score: score, date: jokeDate });
+            getJoke();
         }
     }
     else {
@@ -103,54 +91,7 @@ function getLocation(weatherDisplay) {
         weatherDisplay.innerHTML = "Geolocation is not supported by this browser.";
     }
 }
-const changeElementColor = (elementID, colorType, colorsArray, colorArrayIdx) => {
-    document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[colorArrayIdx].toString()})`;
-};
-function getColors() {
-    return __awaiter(this, void 0, void 0, function* () {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "text/plain");
-        var raw = '{"model":"default"}';
-        var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-        };
-        fetch("http://colormind.io/api/", requestOptions)
-            .then((response) => response.text())
-            .then((result) => {
-            let colorsArray = JSON.parse(result).result;
-            console.log(colorsArray[0].toString());
-            const h1Color = document.getElementsByTagName("h1")[0];
-            const svgColors = document.getElementsByTagName("path");
-            [...svgColors].forEach((item) => {
-                item.style.fill = `rgb(${colorsArray[4].toString()})`;
-            });
-            document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
-            var $Osc = {
-                hover: function (event) {
-                    event.target.style.backgroundColor = `rgb(${colorsArray[4].toString()})`;
-                },
-                out: function (event) {
-                    event.target.style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
-                },
-            };
-            var $OscElement = document.getElementById("btn-jokes");
-            $OscElement.addEventListener("mouseover", $Osc.hover, false);
-            $OscElement.addEventListener("mouseout", $Osc.out, false);
-            //3 should be for other blob
-            changeElementColor("main-container", "backgroundColor", colorsArray, 0);
-            changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
-            changeElementColor("btn-jokes", "color", colorsArray, 0);
-            changeElementColor("joke-container", "color", colorsArray, 2);
-            changeElementColor("weather-container", "color", colorsArray, 4);
-            h1Color.style.color = `rgb(${colorsArray[4].toString()})`;
-            console.log("Colors", colorsArray);
-        })
-            .catch((error) => console.log("error", error));
-    });
-}
+// Exercici 4
 function getWeather() {
     return __awaiter(this, void 0, void 0, function* () {
         const key = "c6e04a286ab44cf5842181305222805";
@@ -180,3 +121,78 @@ function showPosition(position) {
     getWeather();
 }
 getLocation(weatherDisplay);
+// Exercici 6 -  Pero en lugar de usar svg para un fondo, creé esta función para aleatorizar el fondo del blob
+function generateBlob2(element) {
+    const percentage1 = randomNum(25, 75);
+    const percentage2 = randomNum(25, 75);
+    const percentage3 = randomNum(25, 75);
+    const percentage4 = randomNum(25, 75);
+    var percentage11 = 100 - percentage1;
+    var percentage21 = 100 - percentage2;
+    var percentage31 = 100 - percentage3;
+    var percentage41 = 100 - percentage4;
+    var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
+    document.getElementById(element).style.borderRadius = borderRadius;
+}
+exports.generateBlob2 = generateBlob2;
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
+}
+// BONUS Esta función obtiene un esquema de color con 5 colores diferentes, y lo aplico a los elementos html en cada clic de botón. 
+const changeElementColor = (elementID, colorType, colorsArray, colorArrayIdx) => {
+    document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[colorArrayIdx].toString()})`;
+};
+// API para coger esquemas de colores
+function getColors() {
+    return __awaiter(this, void 0, void 0, function* () {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "text/plain");
+        var raw = '{"model":"default"}';
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+        fetch("http://colormind.io/api/", requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+            let colorsArray = JSON.parse(result).result;
+            const getRGB = (index) => {
+                return `rgb(${colorsArray[index].toString()})`;
+            };
+            document.body.style.backgroundColor = getRGB(1);
+            var elementHover = (styleProperty, hoverColor, outColor) => {
+                return {
+                    hover: function (event) {
+                        event.target.style[styleProperty] = getRGB(hoverColor);
+                    },
+                    out: function (event) {
+                        event.target.style[styleProperty] = getRGB(outColor);
+                    },
+                };
+            };
+            var buttonJoke = document.getElementById("btn-jokes");
+            buttonJoke.addEventListener("mouseover", elementHover("backgroundColor", 4, 3).hover, false);
+            buttonJoke.addEventListener("mouseout", elementHover("backgroundColor", 4, 3).out, false);
+            const svgColors = document.getElementsByTagName("path");
+            [...svgColors].forEach((item) => {
+                item.style.fill = getRGB(1);
+                item.addEventListener("mouseover", elementHover("fill", 4, 1).hover, false);
+                item.addEventListener("mouseout", elementHover("fill", 4, 1).out, false);
+            });
+            //3 should be for other blob
+            //console.log(colorsArray[0].toString());
+            const h1Color = document.getElementsByTagName("h1")[0];
+            h1Color.style.color = getRGB(4);
+            changeElementColor("main-container", "backgroundColor", colorsArray, 0);
+            changeElementColor("right-blob", "backgroundColor", colorsArray, 3);
+            changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
+            changeElementColor("btn-jokes", "color", colorsArray, 0);
+            changeElementColor("joke-container", "color", colorsArray, 2);
+            changeElementColor("weather-container", "color", colorsArray, 4);
+            console.log("Colors", colorsArray);
+        })
+            .catch((error) => console.log("error", error));
+    });
+}

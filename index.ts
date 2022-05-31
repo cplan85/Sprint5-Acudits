@@ -8,28 +8,13 @@ let currentWeather: string = "";
 let reportAcudits: reportAcudit[] = [];
 let geekJokes: boolean = false;
 
-export function generateBlob2() {
-  const percentage1 = randomNum(25, 75);
-  const percentage2 = randomNum(25, 75);
-  const percentage3 = randomNum(25, 75);
-  const percentage4 = randomNum(25, 75);
-  var percentage11 = 100 - percentage1;
-  var percentage21 = 100 - percentage2;
-  var percentage31 = 100 - percentage3;
-  var percentage41 = 100 - percentage4;
-  var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
 
-  document.getElementById("main-container").style.borderRadius = borderRadius;
-}
-
-function randomNum(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
-}
-
+// Exercici 1 & Exercici 5
 export async function getJoke(): Promise<void> {
   //generateBlob();
   getColors();
-  generateBlob2();
+  generateBlob2("main-container");
+  generateBlob2("right-blob");
   var myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
 
@@ -73,6 +58,7 @@ const isSameJoke = (reports: reportAcudit[], currentJoke: string) => {
     : false;
 };
 
+//Exercici 3
 export const giveScore = (score: Score) => {
   const currentTime = new Date();
   let jokeDate = currentTime.toISOString();
@@ -85,12 +71,14 @@ export const giveScore = (score: Score) => {
       reportAcudits[reportAcudits.length - 1].score = score;
     } else {
       reportAcudits.push({ joke: currentJoke, score: score, date: jokeDate });
+      getJoke();
     }
   } else {
     console.log("there are no jokes!");
   }
 
   console.log(reportAcudits);
+  
 };
 
 var weatherDisplay = document.getElementById("weather-container");
@@ -103,75 +91,7 @@ function getLocation(weatherDisplay: HTMLElement) {
   }
 }
 
-const changeElementColor = (
-  elementID: string,
-  colorType: ColorType,
-  colorsArray: [][],
-  colorArrayIdx: number
-): void => {
-  document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[
-    colorArrayIdx
-  ].toString()})`;
-};
-
-async function getColors(): Promise<void> {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "text/plain");
-
-  var raw = '{"model":"default"}';
-
-  var requestOptions: RequestOption = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
-
-  fetch("http://colormind.io/api/", requestOptions)
-    .then((response) => response.text())
-    .then((result) => {
-      let colorsArray: [][] = JSON.parse(result).result;
-      console.log(colorsArray[0].toString());
-      const h1Color = document.getElementsByTagName("h1")[0];
-
-      const svgColors = document.getElementsByTagName("path");
-
-      [...svgColors].forEach((item) => {
-        item.style.fill = `rgb(${colorsArray[4].toString()})`;
-      });
-
-      document.body.style.backgroundColor = `rgb(${colorsArray[1].toString()})`;
-
-      var $Osc = {
-        hover: function (event: Event) {
-          event.target.style.backgroundColor = `rgb(${colorsArray[4].toString()})`;
-        },
-        out: function (event: Event) {
-          event.target.style.backgroundColor = `rgb(${colorsArray[3].toString()})`;
-        },
-      };
-      var $OscElement = document.getElementById("btn-jokes");
-      $OscElement.addEventListener("mouseover", $Osc.hover, false);
-      $OscElement.addEventListener("mouseout", $Osc.out, false);
-
-      //3 should be for other blob
-      changeElementColor("main-container", "backgroundColor", colorsArray, 0);
-
-      changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
-
-      changeElementColor("btn-jokes", "color", colorsArray, 0);
-
-      changeElementColor("joke-container", "color", colorsArray, 2);
-
-      changeElementColor("weather-container", "color", colorsArray, 4);
-
-      h1Color.style.color = `rgb(${colorsArray[4].toString()})`;
-
-      console.log("Colors", colorsArray);
-    })
-    .catch((error) => console.log("error", error));
-}
-
+// Exercici 4
 async function getWeather(): Promise<void> {
   const key: string = "c6e04a286ab44cf5842181305222805";
   const apiUrl: string = "http://api.weatherapi.com/v1/current.json?key=";
@@ -205,3 +125,106 @@ function showPosition(position: GeolocationPosition) {
 }
 
 getLocation(weatherDisplay);
+
+// Exercici 6 -  Pero en lugar de usar svg para un fondo, creé esta función para aleatorizar el fondo del blob
+export function generateBlob2(element: string) {
+  const percentage1 = randomNum(25, 75);
+  const percentage2 = randomNum(25, 75);
+  const percentage3 = randomNum(25, 75);
+  const percentage4 = randomNum(25, 75);
+  var percentage11 = 100 - percentage1;
+  var percentage21 = 100 - percentage2;
+  var percentage31 = 100 - percentage3;
+  var percentage41 = 100 - percentage4;
+  var borderRadius = `${percentage1}% ${percentage11}% ${percentage21}% ${percentage2}% / ${percentage3}% ${percentage4}% ${percentage41}% ${percentage31}%`;
+
+  document.getElementById(element).style.borderRadius = borderRadius;
+}
+
+function randomNum(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min)) + min; // You can remove the Math.floor if you don't want it to be an integer
+}
+
+// BONUS Esta función obtiene un esquema de color con 5 colores diferentes, y lo aplico a los elementos html en cada clic de botón. 
+const changeElementColor = (
+  elementID: string,
+  colorType: ColorType,
+  colorsArray: [][],
+  colorArrayIdx: number
+): void => {
+  document.getElementById(elementID).style[colorType] = `rgb(${colorsArray[
+    colorArrayIdx
+  ].toString()})`;
+};
+
+// API para coger esquemas de colores
+async function getColors(): Promise<void> {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "text/plain");
+
+  var raw = '{"model":"default"}';
+
+  var requestOptions: RequestOption = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  fetch("http://colormind.io/api/", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      let colorsArray: [][] = JSON.parse(result).result;
+
+      const getRGB = (index: number) => {
+          return `rgb(${colorsArray[index].toString()})`
+      }
+
+      document.body.style.backgroundColor = getRGB(1);
+
+      var elementHover = (styleProperty: string, hoverColor: number, outColor: number) =>{ 
+        return {
+        hover: function (event: any) {
+          event.target.style[styleProperty] = getRGB(hoverColor);
+        },
+        out: function (event: any) {
+          event.target.style[styleProperty] = getRGB(outColor);
+        },
+      };
+         }
+      var buttonJoke = document.getElementById("btn-jokes");
+      buttonJoke.addEventListener("mouseover", elementHover("backgroundColor", 4, 3).hover, false);
+      buttonJoke.addEventListener("mouseout", elementHover("backgroundColor", 4, 3).out, false);
+
+      const svgColors = document.getElementsByTagName("path");
+
+      [...svgColors].forEach((item) => {
+        item.style.fill = getRGB(1);
+        item.addEventListener("mouseover", elementHover("fill", 4, 1).hover, false);
+        item.addEventListener("mouseout",  elementHover("fill",4 ,1).out, false);
+      });
+
+      //3 should be for other blob
+
+        //console.log(colorsArray[0].toString());
+        const h1Color = document.getElementsByTagName("h1")[0];
+        h1Color.style.color = getRGB(4);
+
+      changeElementColor("main-container", "backgroundColor", colorsArray, 0);
+
+      changeElementColor("right-blob", "backgroundColor", colorsArray, 3);
+
+      changeElementColor("btn-jokes", "backgroundColor", colorsArray, 3);
+
+      changeElementColor("btn-jokes", "color", colorsArray, 0);
+
+      changeElementColor("joke-container", "color", colorsArray, 2);
+
+      changeElementColor("weather-container", "color", colorsArray, 4);
+
+      console.log("Colors", colorsArray);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+
