@@ -29,7 +29,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="assets/Sprint5_Screenshot.png" alt="Logo" width="600" height="600">
+    <img src="assets/Sprint5-demo.gif" alt="Logo">
   </a>
 
 <h3 align="center">Sprint 5 - Joke Generator</h3>
